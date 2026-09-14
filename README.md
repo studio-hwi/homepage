@@ -1,36 +1,30 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# STUDIO HWI — studiohwi.kr
 
-## Getting Started
+1인 개발 스튜디오 STUDIO HWI의 홈페이지이자 포트폴리오.
+운영 중인 앱(가계부부, Praise Hub, Baby Flow)을 소개합니다.
 
-First, run the development server:
+## 개발
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+http://localhost:3000 에서 확인합니다.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+npm run build   # 프로덕션 빌드 (타입 체크 포함)
+npm start       # 빌드 결과 실행
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 구조
 
-## Learn More
+- `src/app/` — 레이아웃, 페이지, 전역 스타일(`globals.css`에 디자인 토큰), OG 이미지
+- `src/components/` — 섹션 컴포넌트 (Nav, Hero, Ticker, Work, About, Stack, Contact, Footer)
+- `src/data/` — 사이트 정보(`site.ts`)와 프로젝트 목록(`projects.ts`). 내용 수정은 여기서.
+- `public/projects/` — 앱 아이콘과 스크린샷
+- `docs/superpowers/specs/` — 설계 문서
 
-To learn more about Next.js, take a look at the following resources:
+## 스택
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Next.js 15 (App Router) · React 19 · Tailwind CSS 4 · Pretendard · Geist Mono

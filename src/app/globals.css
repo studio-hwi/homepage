@@ -1,26 +1,322 @@
 @import "tailwindcss";
 
+/* ---------------------------------------------------------------------------
+   Tokens. Dark base only for now. The palette lives in :root variables so a
+   prefers-color-scheme (or data-theme) inversion can be added later without
+   touching components.
+--------------------------------------------------------------------------- */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --bg: #0a0a0a;
+  --fg: #f2f2f2;
+  --muted: #8a8a8a;
+  --line: rgba(255, 255, 255, 0.14);
+  --line-strong: rgba(255, 255, 255, 0.32);
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-bg: var(--bg);
+  --color-fg: var(--fg);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+
+  --font-sans: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont,
+    "Apple SD Gothic Neo", "Segoe UI", Roboto, "Noto Sans KR", sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, "SF Mono", Menlo, Consolas,
+    monospace;
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-wipe: cubic-bezier(0.77, 0, 0.18, 1);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* ---------------------------------------------------------------------------
+   Base
+--------------------------------------------------------------------------- */
+html {
+  color-scheme: dark;
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-sans);
+  letter-spacing: -0.01em;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+::selection {
+  background: var(--fg);
+  color: var(--bg);
+}
+
+/* ---------------------------------------------------------------------------
+   Utilities
+--------------------------------------------------------------------------- */
+@utility wrap {
+  width: 100%;
+  max-width: 1440px;
+  margin-inline: auto;
+  padding-inline: clamp(20px, 4vw, 64px);
+}
+
+@utility label {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  line-height: 1.4;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+@utility display {
+  font-weight: 800;
+  letter-spacing: -0.045em;
+  line-height: 0.95;
+  word-break: keep-all;
+}
+
+/* Outlined type. The variable font keeps overlapping contours, which a plain
+   text-stroke exposes as inner lines; painting the (background-colored) fill
+   on top of the stroke hides them. Half the stroke is covered, so 3px reads
+   as 1.5px. */
+@utility outline-text {
+  color: var(--bg);
+  -webkit-text-stroke: 3px var(--fg);
+  paint-order: stroke fill;
+}
+
+/* Link with an underline that draws in from the left. */
+@utility ulink {
+  background-image: linear-gradient(currentColor, currentColor);
+  background-repeat: no-repeat;
+  background-size: 0% 2px;
+  background-position: 0 100%;
+  padding-bottom: 0.08em;
+  transition: background-size 0.6s var(--ease-out-expo);
+  &:hover {
+    background-size: 100% 2px;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Motion — hero entrance
+--------------------------------------------------------------------------- */
+@keyframes rise {
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.clip {
+  display: block;
+  overflow: hidden;
+  padding-bottom: 0.1em;
+  margin-bottom: -0.1em;
+}
+
+.rise {
+  display: block;
+  transform: translateY(110%);
+  animation: rise 1.1s var(--ease-out-expo) forwards;
+}
+
+.fade-up {
+  opacity: 0;
+  animation: fade-up 1s var(--ease-out-expo) forwards;
+}
+
+/* ---------------------------------------------------------------------------
+   Motion — scroll reveal (see components/Reveal.tsx)
+--------------------------------------------------------------------------- */
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition:
+    opacity 0.9s var(--ease-out-expo),
+    transform 0.9s var(--ease-out-expo);
+}
+
+.reveal[data-in] {
+  opacity: 1;
+  transform: none;
+}
+
+/* ---------------------------------------------------------------------------
+   Ticker
+--------------------------------------------------------------------------- */
+@keyframes ticker {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.ticker-track {
+  display: flex;
+  width: max-content;
+  animation: ticker 48s linear infinite;
+}
+
+.ticker:hover .ticker-track {
+  animation-play-state: paused;
+}
+
+/* ---------------------------------------------------------------------------
+   Project rows — hover wipe + cursor-following preview
+--------------------------------------------------------------------------- */
+.row {
+  --row-bg: var(--bg);
+  --row-fg: var(--fg);
+  --row-muted: var(--muted);
+  --row-line: var(--line-strong);
+  position: relative;
+  isolation: isolate;
+  color: var(--row-fg);
+  transition: color 0.35s ease;
+}
+
+.row::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: var(--fg);
+  transform: scaleY(0);
+  transform-origin: bottom;
+  transition: transform 0.5s var(--ease-wipe);
+  pointer-events: none;
+}
+
+.row-muted {
+  color: var(--row-muted);
+  transition: color 0.35s ease;
+}
+
+/* No display here: Tailwind's `hidden lg:block` controls it. */
+.row-arrow {
+  transition: transform 0.5s var(--ease-out-expo);
+}
+
+.stretched::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+.badge {
+  position: relative;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+  padding: 0.6rem 0.85rem;
+  border: 1px solid var(--row-line);
+  color: var(--row-fg);
+  transition:
+    border-color 0.35s ease,
+    background-color 0.25s ease,
+    color 0.25s ease;
+}
+
+.badge:hover {
+  background: var(--row-fg);
+  color: var(--row-bg);
+  border-color: var(--row-fg);
+}
+
+.preview {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 3;
+  width: 210px;
+  pointer-events: none;
+  opacity: 0;
+  overflow: hidden;
+  border-radius: 20px;
+  border: 1px solid rgba(10, 10, 10, 0.25);
+  box-shadow: 0 40px 80px rgba(0, 0, 0, 0.45);
+  filter: grayscale(1) contrast(1.05);
+  /* Floats to the upper right of the cursor so the row's text stays readable. */
+  transform: translate(calc(var(--mx, 50%) + 40px), calc(var(--my, 50%) - 82%))
+    rotate(-6deg) scale(0.9);
+  transition:
+    opacity 0.35s ease,
+    transform 0.18s ease-out;
+}
+
+.preview.is-wide {
+  width: 320px;
+  border-radius: 12px;
+}
+
+@media (hover: hover) and (min-width: 1024px) {
+  .row:hover {
+    --row-bg: var(--fg);
+    --row-fg: var(--bg);
+    --row-muted: rgba(10, 10, 10, 0.62);
+    --row-line: rgba(10, 10, 10, 0.32);
+    z-index: 5;
+  }
+  .row:hover::before {
+    transform: scaleY(1);
+    transform-origin: top;
+  }
+  .row:hover .row-arrow {
+    transform: translate(4px, -4px) rotate(-45deg);
+  }
+  .row:hover .preview {
+    opacity: 1;
+    transform: translate(calc(var(--mx, 50%) + 40px), calc(var(--my, 50%) - 82%))
+      rotate(-6deg) scale(1);
+  }
+}
+
+@media (hover: none), (max-width: 1023px) {
+  .preview {
+    display: none;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Reduced motion
+--------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .rise,
+  .fade-up {
+    animation: none;
+    transform: none;
+    opacity: 1;
+  }
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  .ticker-track {
+    animation: none;
+  }
+  .row::before,
+  .row-arrow,
+  .preview,
+  .ulink {
+    transition: none;
+  }
 }
