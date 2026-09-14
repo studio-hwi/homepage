@@ -19,7 +19,7 @@ export function Ticker() {
 
   return (
     <div
-      className="ticker label border-y border-line py-4 !text-fg/70"
+      className="ticker label overflow-hidden border-y border-line py-4 !text-fg/70"
       aria-hidden
     >
       <div className="ticker-track">

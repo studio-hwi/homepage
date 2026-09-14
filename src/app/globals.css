@@ -35,6 +35,12 @@
 html {
   color-scheme: dark;
   scroll-behavior: smooth;
+  /* Never let the document grow wider than the viewport: on iOS Safari a
+     wider document lets pinch-zoom shrink the page indefinitely. `clip`
+     avoids turning the element into a scroll container; `hidden` is the
+     fallback for engines without it. */
+  overflow-x: hidden;
+  overflow-x: clip;
 }
 
 body {
@@ -45,6 +51,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
+  overflow-x: clip;
 }
 
 ::selection {
