@@ -63,10 +63,10 @@ export const projects: Project[] = [
     googlePlay:
       "https://play.google.com/store/apps/details?id=dev.hwiveloper.babyflow",
     preview: {
-      src: "/projects/baby-flow-og.png",
-      width: 1200,
-      height: 630,
-      alt: "Baby Flow",
+      src: "/projects/baby-flow-shot.jpg",
+      width: 615,
+      height: 1336,
+      alt: "Baby Flow 앱 화면",
     },
   },
 ];
