@@ -19,7 +19,7 @@ npm start       # 빌드 결과 실행
 
 ## 구조
 
-- `src/app/` — 레이아웃, 페이지, 전역 스타일(`globals.css`에 디자인 토큰), OG 이미지
+- `src/app/` — 레이아웃, 페이지, 전역 스타일(`globals.css`에 디자인 토큰), OG 이미지, 아이콘(`brand-mark.tsx` 공용), robots·sitemap
 - `src/components/` — 섹션 컴포넌트 (Nav, Hero, Ticker, Work, About, Stack, Contact, Footer)
 - `src/data/` — 사이트 정보(`site.ts`)와 프로젝트 목록(`projects.ts`). 내용 수정은 여기서.
 - `public/projects/` — 앱 아이콘과 스크린샷
