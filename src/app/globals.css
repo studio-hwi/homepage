@@ -59,6 +59,35 @@ body {
   color: var(--bg);
 }
 
+/* Keyboard focus. currentColor keeps the ring visible on both the dark page
+   and inverted (light) surfaces such as a hovered project row. */
+:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 4px;
+}
+
+/* Programmatic focus targets (the skip link's <main>) need no ring. */
+[tabindex="-1"]:focus {
+  outline: none;
+}
+
+.skip-link {
+  position: fixed;
+  left: 16px;
+  top: 16px;
+  z-index: 60;
+  padding: 0.75rem 1rem;
+  background: var(--fg);
+  color: var(--bg);
+  font-weight: 600;
+  transform: translateY(calc(-100% - 32px));
+}
+
+.skip-link:focus-visible {
+  transform: none;
+  outline-color: var(--fg);
+}
+
 /* ---------------------------------------------------------------------------
    Utilities
 --------------------------------------------------------------------------- */
@@ -222,6 +251,16 @@ body {
   position: absolute;
   inset: 0;
   z-index: 1;
+}
+
+/* The link covers the whole row, so ring the row instead of the name. */
+.stretched:focus-visible {
+  outline: none;
+}
+
+.stretched:focus-visible::after {
+  outline: 2px solid currentColor;
+  outline-offset: -2px;
 }
 
 .badge {
