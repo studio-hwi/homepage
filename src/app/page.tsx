@@ -41,8 +41,12 @@ export default function Home() {
           __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c"),
         }}
       />
+      <a href="#top" className="skip-link">
+        본문으로 건너뛰기
+      </a>
       <Nav />
-      <main id="top">
+      {/* tabIndex lets the skip link move keyboard focus here, not just scroll. */}
+      <main id="top" tabIndex={-1}>
         <Hero />
         <Ticker />
         <Work />

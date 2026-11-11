@@ -34,7 +34,8 @@ export function Nav() {
       className={[
         "fixed inset-x-0 top-0 z-50 text-white mix-blend-difference",
         "transition-transform duration-500 ease-[var(--ease-out-expo)]",
-        hidden ? "-translate-y-full" : "translate-y-0",
+        // Keyboard focus inside the bar brings it back even mid-scroll.
+        hidden ? "-translate-y-full focus-within:translate-y-0" : "translate-y-0",
       ].join(" ")}
     >
       <nav className="wrap flex h-20 items-center justify-between">
