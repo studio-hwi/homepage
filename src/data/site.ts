@@ -1,7 +1,11 @@
+import { projects } from "@/data/projects";
+
 export const site = {
   name: "STUDIO HWI",
   url: "https://www.studiohwi.kr",
   title: "STUDIO HWI — 1인 개발 스튜디오",
+  // Copy, not derived: the particle after the last app name depends on it.
+  // Update this sentence when adding an app to projects.ts.
   description:
     "iOS·Android 앱과 웹을 기획부터 출시까지, 한 사람이 끝까지 만드는 1인 개발 스튜디오. 가계부부, Praise Hub, Baby Flow를 만들었습니다.",
   email: "admin@studiohwi.kr",
@@ -17,7 +21,7 @@ export const site = {
     { label: "Contact", href: "#contact" },
   ],
   stats: [
-    { value: "03", label: "Apps shipped" },
+    { value: String(projects.length).padStart(2, "0"), label: "Apps shipped" },
     { value: "02", label: "Platforms" },
     { value: "01", label: "Developer" },
   ],
