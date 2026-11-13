@@ -13,7 +13,8 @@ npm run dev
 http://localhost:3000 에서 확인합니다.
 
 ```bash
-npm run build   # 프로덕션 빌드 (타입 체크 포함)
+npm run lint    # ESLint (next/core-web-vitals)
+npm run build   # 프로덕션 빌드 (타입·린트 체크 포함)
 npm start       # 빌드 결과 실행
 ```
 

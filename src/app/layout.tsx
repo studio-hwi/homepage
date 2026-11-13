@@ -3,6 +3,7 @@ import { GeistMono } from "geist/font/mono";
 import "pretendard/dist/web/variable/pretendardvariable-dynamic-subset.css";
 import "./globals.css";
 import { site } from "@/data/site";
+import { projects } from "@/data/projects";
 
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
@@ -18,9 +19,7 @@ export const metadata: Metadata = {
     "앱 개발",
     "React Native",
     "Next.js",
-    "가계부부",
-    "Praise Hub",
-    "Baby Flow",
+    ...projects.map((p) => p.name),
   ],
   openGraph: {
     type: "website",
